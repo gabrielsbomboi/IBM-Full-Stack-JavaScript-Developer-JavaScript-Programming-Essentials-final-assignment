@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TravelBloom</title>
+  <!-- FontAwesome for social icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    /* Basic Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, html { font-family: Arial, sans-serif; }
+
+    /* Navigation Bar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(255,255,255,0.85);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+    }
+    nav .logo a { font-size: 1.5rem; font-weight: bold; color: #333; text-decoration: none; }
+    nav .nav-links a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+    .search-container input {
+      padding: 0.5rem;
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-container button {
+      padding: 0.5rem 1rem;
+      margin-left: 0.5rem;
+      border: none;
+      border-radius: 4px;
+      background: #0077cc;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background-image: url('hero.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      padding: 0 1rem;
+    }
+    .social-icons a {
+      margin: 0 0.5rem;
+      font-size: 1.5rem;
+      color: #fff;
+      text-decoration: none;
+    }
+    .hero-content h1 {
+      margin: 1rem 0;
+      font-size: 2.5rem;
+      line-height: 1.2;
+    }
+    .hero-content p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+    .book-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      background: #ff5a5f;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    /* Launch Lab Section */
+    .launch-lab {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+    }
+    .launch-lab label {
+      margin-right: 1rem;
+      font-size: 0.9rem;
+    }
+    .launch-lab button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background: #28a745;
+      color: #fff;
+      cursor: pointer;
+    }
+    .launch-lab button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="logo"><a href="#">TravelBloom</a></div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact Us</a>
+    </div>
+    <div class="search-container">
+      <input id="search-input" type="text" placeholder="Search destinations..." />
+      <button id="search-btn">Search</button>
+      <button id="clear-btn">Clear</button>
+    </div>
+  </nav>
+
+  <!-- Hero / Content Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+      <h1>Explore the World with TravelBloom</h1>
+      <p>Discover hidden gems and immerse yourself in diverse cultures around the globe.</p>
+      <button class="book-btn" id="book-btn">Book Now</button>
+    </div>
+  </section>
+
+  <!-- Launch Lab Widget -->
+  <div class="launch-lab">
+    <label><input type="checkbox" id="agree-checkbox" /> I agree to use this app responsibly.</label>
+    <button id="launch-btn" disabled>Launch App</button>
+  </div>
+
+  <script>
+    // Enable Launch App button only when agreed
+    const agreeCheckbox = document.getElementById('agree-checkbox');
+    const launchBtn = document.getElementById('launch-btn');
+    agreeCheckbox.addEventListener('change', () => {
+      launchBtn.disabled = !agreeCheckbox.checked;
+    });
+
+    launchBtn.addEventListener('click', () => {
+      const username = 'REPLACE_WITH_USERNAME';
+      const email = 'REPLACE_WITH_EMAIL';
+      const labUrl = `https://skills-network-labs.example.com?user=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}`;
+      window.open(labUrl, '_blank');
+    });
+
+    // Search & Clear Functionality
+    const searchInput = document.getElementById('search-input');
+    document.getElementById('search-btn').addEventListener('click', () => {
+      const query = searchInput.value.trim();
+      if (query) fetchRecommendations(query);
+    });
+    document.getElementById('clear-btn').addEventListener('click', () => {
+      searchInput.value = '';
+      clearRecommendations();
+    });
+
+    function fetchRecommendations(query) {
+      console.log('Fetching recommendations for', query);
+      // TODO: Integrate with backend/API to retrieve dynamic recommendations
+      // Example:
+      // fetch(`/api/recommendations?q=${encodeURIComponent(query)}`)
+      //   .then(res => res.json())
+      //   .then(data => displayRecommendations(data));
+    }
+
+    function clearRecommendations() {
+      console.log('Clearing recommendations');
+      // TODO: Remove or hide recommendation results from the DOM
+    }
+  </script>
+</body>
+</html>
